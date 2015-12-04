@@ -19,7 +19,13 @@
   "Return an altered board state with a move made at the given coordinate."
   [board player x y]
     (assoc board y (assoc (get board y) x player)))
-    
+
+(defn get-move [board]
+	(println "Pleaser enter an x and y: ")
+	(let[x (read-string (read-line)) y (read-string (read-line))]
+	(if (and (< x (count board)) (>= x 0 ) (< y (count board)) (>= y 0 ) (= (nth (nth board x) y) \space)) {:x x, :y y} (do (println "Please Enter a Valid Move: ") (get-move board)))
+	))
+
 (defn check-win
   [board]
     false)
@@ -34,7 +40,6 @@
       (if (= who \X)
         (main-loop (make-move board \X (mod moves (count board)) (quot moves (count board))) (inc moves) \O)
         (main-loop (make-move board \O (mod moves (count board)) (quot moves (count board))) (inc moves) \X)))))
-  
 
 ; general structure:
 ; 1. ask for board size
