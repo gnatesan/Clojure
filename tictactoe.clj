@@ -7,32 +7,34 @@
 (defn print-board
   "Given a game board, it prints a graphical representation of the board."
   [board]
+    (println (str "   " (clojure.string/join "   " (range 0 (count board)))))
     (loop [i 0] (let [row (get board i)]
-      (println (clojure.string/join " | " row))
-      (println (clojure.string/join "-+-" (repeat (count row) \-)))
+      (println (str (format "%2d" i) \space (clojure.string/join " | " row)))
+      (println (str "   " (clojure.string/join "-+-" (repeat (count row) \-))))
       (if (< i (- (count board) 2))
         (recur (inc i)))))
-    (println (clojure.string/join " | " (last board))))
+    (println (str (format "%2d" (dec (count board))) \space (clojure.string/join " | " (last board)))))
 
 (defn make-move
+  "Return an altered board state with a move made at the given coordinate."
   [board player x y]
     (assoc board y (assoc (get board y) x player)))
-
-(defn mainloop
-  "The game loop."
+    
+(defn check-win
   [board]
-  (loop [moves 0]
-    (print-board board)
-    ; Get player's move
-    ; Check win condition
-    (print-board board)
-    ; Get computer move
-    ; Check win condition
-    (if (< moves (* (count board) (count board)))
-      (recur (inc moves))))
-  (println "Someone won"))
-
-(mainloop (gen-board 4))
+    false)
+        
+(defn main-loop
+  "The game loop."
+  [board moves who]
+  (cond
+    (check-win board) (if (= who \X) \O \X)
+    (>= moves (* (count board) (count board))) (do (print-board board) "Stalemate")
+    :else (do (print-board board)
+      (if (= who \X)
+        (main-loop (make-move board \X (mod moves (count board)) (quot moves (count board))) (inc moves) \O)
+        (main-loop (make-move board \O (mod moves (count board)) (quot moves (count board))) (inc moves) \X)))))
+  
 
 ; general structure:
 ; 1. ask for board size
