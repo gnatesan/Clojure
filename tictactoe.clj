@@ -18,12 +18,21 @@
   [board player x y]
     (assoc board y (assoc (get board y) x player)))
 
-(def board (gen-board 10))
-(def board (make-move board \X 2 2))
-(def board (make-move board \O 4 0))
-(def board (make-move board \X 1 1))
-(print-board board)
+(defn mainloop
+  "The game loop."
+  [board]
+  (loop [moves 0]
+    (print-board board)
+    ; Get player's move
+    ; Check win condition
+    (print-board board)
+    ; Get computer move
+    ; Check win condition
+    (if (< moves (* (count board) (count board)))
+      (recur (inc moves))))
+  (println "Someone won"))
 
+(mainloop (gen-board 4))
 
 ; general structure:
 ; 1. ask for board size
