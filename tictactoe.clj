@@ -51,3 +51,4 @@
 
 (def test-board [[\X \space \X \X] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
 
+(main-loop (gen-board 4))
