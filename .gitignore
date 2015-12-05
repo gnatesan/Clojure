@@ -5,6 +5,6 @@ clojure.iml
 doc/
 epl-v10.html
 pom.xml
-readme.txt
 src/
 test/
+readme.txt.backup
