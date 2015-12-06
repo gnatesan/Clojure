@@ -78,7 +78,7 @@
         (play)))))
 
 (def test-board-no-win [[\X \space \X \X] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
-(def test-board-emptys [[\space \space \space \space] [\space \X \space \space] [\space \space \O \space] [\space \O \O \space]])
+(def test-board-emptys [[\space \space \space \space] [\space \X \space \space] [\space \space \O \space] [\O \O \O \space]])
 (def test-board-X-row [[\X \X \X \X] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
 (def test-board-X-col [[\X \space \X \X] [\space \X \X \space] [\space \space \X \space] [\space \O \X \space]])
 (def test-board-X-diag [[\X \space \X \X] [\space \X \O \space] [\space \space \X \space] [\space \O \O \X]])
