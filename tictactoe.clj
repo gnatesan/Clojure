@@ -38,22 +38,23 @@
 
 (defn get-col 
   [board col]
-   (map vector (range 0 (+ 1 (count board))) (repeat col)))
+   (map vector (repeat col) (range 0 (count board))))
 
 (defn get-tl-diag
   [board]
-   (map vector (range 0 (+ 1 (count board))) (range 0 (+ 1 (count board)))))
+   (map vector (range 0 (count board)) (range 0 (count board))))
 
 (defn get-bl-diag
   [board]
-	   (map vector (reverse (range 0 (+ 1 (count board)))) (range 0 (+ 1 (count board)))))
+	   (map vector (reverse (range 0 (count board))) (range 0 (count board))))
   
 (defn check-win
   [board]
     (or
       (some true? (map (comp (partial check-line board) (partial get-row board)) (range 0 (count board)))) ;rows
       (some true? (map (comp (partial check-line board) (partial get-col board)) (range 0 (count board)))) ;columns
-      (identity false))) ;diagonals
+      (check-line board (get-tl-diag board))
+      (check-line board (get-bl-diag board)))) ;diagonals
   
 (defn possible-moves
   [board]
@@ -100,7 +101,7 @@
 (def test-board-X-diag [[\X \space \X \X] [\space \X \O \space] [\space \space \X \space] [\space \O \O \X]])
 (def test-board-O-row [[\O \O \O \O] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
 (def test-board-O-col [[\X \space \O \X] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
-(def test-board-O-diag [[\O \space \X \X] [\space \O \O \space] [\space \space \O \space] [\space \O \O \O]])
+(def test-board-O-diag [[\O \space \X \O] [\space \X \O \space] [\space \O \O \space] [\O \space \O \O]])
 (def tests [test-board-no-win test-board-emptys test-board-X-row test-board-X-col test-board-X-diag test-board-O-row test-board-O-col test-board-O-diag])
 
 ;(main-loop (gen-board 4))
