@@ -26,6 +26,11 @@
 	(if (and (< x (count board)) (>= x 0 ) (< y (count board)) (>= y 0 ) (= (nth (nth board y) x) \space)) {:x x, :y y} (do (println "Please Enter a Valid Move: ") (get-move board)))
 	))
   
+(defn check-win
+  [board]
+    (let [g #(nth (nth board %2) %1)]
+      (and (= (g 0 0) \X) (= (g 1 0) \X) (= (g 2 0) \X) (= (g 3 0) \X))))
+  
 (defn possible-moves
   [board]
   (for [x (range 0 (count board)) y (range 0 (count board))
@@ -33,21 +38,13 @@
   
 (defn comp-move 
   [board]
-  (if (identity true)
-    (rand-nth (possible-moves board))
     (let [poss (possible-moves board)
       wins (filter (comp check-win (partial make-move board \O)) poss)
       loss (filter (comp check-win (partial make-move board \X)) poss)]
       (cond
         (not (empty? wins)) (rand-nth wins)
         (not (empty? loss)) (rand-nth loss)
-        :else (last poss)))))
-    
-
-(defn check-win
-  [board]
-    (let [g #(nth (nth board %2) %1)]
-      (and (= (g 0 0) \X) (= (g 1 0) \X) (= (g 2 0) \X) (= (g 3 0) \X))))
+        :else (rand-nth poss))))
         
 (defn main-loop
   "The game loop."
