@@ -26,26 +26,39 @@
 	(if (and (< x (count board)) (>= x 0 ) (< y (count board)) (>= y 0 ) (= (nth (nth board y) x) \space)) {:x x, :y y} (do (println "Please Enter a Valid Move: ") (get-move board)))
 	))
   
+(defn possible-moves
+  [board]
+  (for [x (range 0 (count board)) y (range 0 (count board))
+    :when (= (nth (nth board y) x) \space)] {:x x :y y}))
+  
 (defn comp-move 
   [board]
-  (rand-nth
-    (for [x (range 0 (count board)) y (range 0 (count board))
-      :when (= (nth (nth board y) x) \space)] {:x x :y y})))
+  (if (identity true)
+    (rand-nth (possible-moves board))
+    (let [poss (possible-moves board)
+      wins (filter (comp check-win (partial make-move board \O)) poss)
+      loss (filter (comp check-win (partial make-move board \X)) poss)]
+      (cond
+        (not (empty? wins)) (rand-nth wins)
+        (not (empty? loss)) (rand-nth loss)
+        :else (last poss)))))
+    
 
 (defn check-win
   [board]
-    false)
+    (let [g #(nth (nth board %2) %1)]
+      (and (= (g 0 0) \X) (= (g 1 0) \X) (= (g 2 0) \X) (= (g 3 0) \X))))
         
 (defn main-loop
   "The game loop."
   ([board moves who]
     (cond
-      (check-win board) (if (= who \X) "Computer wins." "Player wins!")
+      (check-win board) (do (print-board board) (if (= who \X) "Computer wins." "Player wins!"))
       (>= moves (* (count board) (count board))) (do (print-board board) "Stalemate.")
       :else (do (print-board board) (println)
         (if (= who \X)
           (main-loop (make-move board \X (get-move board)) (inc moves) \O)
-          (main-loop (let [t (comp-move board)] (println t) (make-move board \O t)) (inc moves) \X)))))
+          (main-loop (do (println "Computer makes a move:") (make-move board \O (comp-move board))) (inc moves) \X)))))
   ([board] (main-loop board 0 \X))
   ([] (main-loop (gen-board) 0 \X)))
 
