@@ -25,22 +25,26 @@
 	(let[x (read-string (read-line)) y (read-string (read-line))]
 	(if (and (< x (count board)) (>= x 0 ) (< y (count board)) (>= y 0 ) (= (nth (nth board y) x) \space)) {:x x, :y y} (do (println "Please Enter a Valid Move: ") (get-move board)))
 	))
-  
+      
 (defn check-line
-  [len line]
-    (and
-      (= (count (filter #(not= % \space) line)) len)
-      (apply = line)))
+  [board coords]
+    (let [line (map (fn [[x y]] (nth (nth board y) x)) coords)] (and
+      (= (count (filter #(not= % \space) line)) (count line))
+      (apply = line))))
+
+(defn get-row
+  [board row]
+    (map vector (range 0 (count board)) (repeat row)))
 
 (defn get-col 
   [board col]
-   (map vector (range 0 (+ 1 (count board))) (repeat col)))
+   (map vector (repeat col) (range 0 (count board))))
   
 (defn check-win
   [board]
     (or
-      (some true? (map (partial check-line (count board)) board)) ;rows
-      (identity false) ;columns
+      (some true? (map (comp (partial check-line board) (partial get-row board)) (range 0 (count board)))) ;rows
+      (some true? (map (comp (partial check-line board) (partial get-col board)) (range 0 (count board)))) ;columns
       (identity false))) ;diagonals
   
 (defn possible-moves
