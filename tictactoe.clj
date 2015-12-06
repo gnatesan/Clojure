@@ -27,15 +27,15 @@
 	))
   
 (defn check-line
-  [line]
+  [len line]
     (and
-      (= (count (filter #(not= % \space) line)) 4)
+      (= (count (filter #(not= % \space) line)) len)
       (apply = line)))
   
 (defn check-win
   [board]
     (or
-      (some true? (map check-row board)) ;rows
+      (some true? (map (partial check-line (count board)) board)) ;rows
       (identity false) ;columns
       (identity false))) ;diagonals
   
@@ -66,6 +66,16 @@
           (main-loop (do (println "Computer makes a move:") (make-move board \O (comp-move board))) (inc moves) \X)))))
   ([board] (main-loop board 0 \X))
   ([] (main-loop (gen-board) 0 \X)))
+  
+(defn play []
+  (print "Please enter a side-length for the game board: ")
+  (flush)
+  (let [s (read-string (read-line))]
+    (if (> s 0)
+      (main-loop (gen-board s))
+      (do
+        (println "Invalid side-length.")
+        (play)))))
 
 (def test-board-no-win [[\X \space \X \X] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
 (def test-board-emptys [[\space \space \space \space] [\space \X \space \space] [\space \space \O \space] [\space \O \O \space]])
