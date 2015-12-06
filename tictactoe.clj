@@ -34,8 +34,10 @@
   
 (defn check-win
   [board]
-    (let [g #(nth (nth board %2) %1)]
-      (and (= (g 0 0) \X) (= (g 1 0) \X) (= (g 2 0) \X) (= (g 3 0) \X))))
+    (or
+      (some true? (map check-row board)) ;rows
+      (identity false) ;columns
+      (identity false))) ;diagonals
   
 (defn possible-moves
   [board]
@@ -65,6 +67,14 @@
   ([board] (main-loop board 0 \X))
   ([] (main-loop (gen-board) 0 \X)))
 
-(def test-board [[\X \space \X \X] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
+(def test-board-no-win [[\X \space \X \X] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
+(def test-board-emptys [[\space \space \space \space] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
+(def test-board-X-row [[\X \X \X \X] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
+(def test-board-X-col [[\X \space \X \X] [\space \X \X \space] [\space \space \X \space] [\space \O \X \space]])
+(def test-board-X-diag [[\X \space \X \X] [\space \X \O \space] [\space \space \X \space] [\space \O \O \X]])
+(def test-board-O-row [[\O \O \O \O] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
+(def test-board-O-col [[\X \space \O \X] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
+(def test-board-O-diag [[\O \space \X \X] [\space \O \O \space] [\space \space \O \space] [\space \O \O \O]])
+(def tests [test-board-no-win test-board-emptys test-board-X-row test-board-X-col test-board-X-diag test-board-O-row test-board-O-col test-board-O-diag])
 
-(main-loop (gen-board 4))
+;(main-loop (gen-board 4))
