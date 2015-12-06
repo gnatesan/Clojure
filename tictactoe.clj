@@ -35,6 +35,14 @@
 (defn get-col 
   [board col]
    (map vector (range 0 (+ 1 (count board))) (repeat col)))
+
+(defn get-tl-diag
+  [board]
+   (map vector (range 0 (+ 1 (count board))) (range 0 (+ 1 (count board)))))
+
+(defn get-bl-diag
+  [board]
+	   (map vector (reverse (range 0 (+ 1 (count board)))) (range 0 (+ 1 (count board)))))
   
 (defn check-win
   [board]
