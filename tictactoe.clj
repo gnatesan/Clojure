@@ -26,11 +26,15 @@
 	(if (and (< x (count board)) (>= x 0 ) (< y (count board)) (>= y 0 ) (= (nth (nth board y) x) \space)) {:x x, :y y} (do (println "Please Enter a Valid Move: ") (get-move board)))
 	))
   
-(defn check-row
-  [row]
+(defn check-line
+  [line]
     (and
-      (= (count (filter #(not= % \space) row)) 4)
-      (apply = row)))
+      (= (count (filter #(not= % \space) line)) 4)
+      (apply = line)))
+
+(defn get-col 
+  [board col]
+   (map vector (range 0 (+ 1 (count board))) (repeat col)))
   
 (defn check-win
   [board]
@@ -67,4 +71,4 @@
 
 (def test-board [[\X \space \X \X] [\space \X \O \space] [\space \space \O \space] [\space \O \O \space]])
 
-(main-loop (gen-board 4))
+;(main-loop (gen-board 4))
