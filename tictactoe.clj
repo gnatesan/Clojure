@@ -27,11 +27,10 @@
 	))
   
 (defn check-row
-  [board r]
-  (let [row (nth board r)]
+  [row]
     (and
       (= (count (filter #(not= % \space) row)) 4)
-      (apply = row))))
+      (apply = row)))
   
 (defn check-win
   [board]
