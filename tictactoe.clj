@@ -26,6 +26,13 @@
 	(if (and (< x (count board)) (>= x 0 ) (< y (count board)) (>= y 0 ) (= (nth (nth board y) x) \space)) {:x x, :y y} (do (println "Please Enter a Valid Move: ") (get-move board)))
 	))
   
+(defn check-row
+  [board r]
+  (let [row (nth board r)]
+    (and
+      (= (count (filter #(not= % \space) row)) 4)
+      (apply = row))))
+  
 (defn check-win
   [board]
     (let [g #(nth (nth board %2) %1)]
