@@ -89,7 +89,7 @@
   (flush)
   (let [s (read-string (read-line))]
     (if (> s 0)
-      (main-loop (gen-board s))
+      (println (main-loop (gen-board s)))
       (do
         (println "Invalid side-length.")
         (play)))))
